@@ -1,4 +1,4 @@
-name: Build Kernel
+name: Kernel CI
 on:
   repository_dispatch:
   workflow_dispatch:
@@ -36,7 +36,7 @@ jobs:
       - name: Upload KernelSU Patch
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: KernelSU_${{ env.KernelSU_id }]_patch_${{ env.Patch_id }}
+          name: KernelSU_${{ env.KernelSU_id }}_patch_${{ env.Patch_id }}
           path: ${{ env.KernelSU_Dir }}
           retention-days: 5
 
