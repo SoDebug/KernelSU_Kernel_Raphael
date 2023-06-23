@@ -64,13 +64,6 @@ jobs:
         run: |
           git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
           
-      - name: Checkout Commit Info
-        run: |
-          useVersionInfo=$(git show -s --date=short --format="提交人: %an<br/>提交时间: %cd<br/>提交内容: %s<br/>commit hash: %H")
-          echo "useVersionInfo=$useVersionInfo" >> $GITHUB_ENV
-          echo "DATE=$(date "+%Y-%m-%d %H:%M:%S")" >> $GITHUB_ENV
-          echo "DATE1=$(date "+%Y-%m-%d")" >> $GITHUB_ENV
-          
       - name: Remove Old KernelSU Files
         run: |
           rm -rf drivers/staging/kernelsu && rm -rf .git/module/*
