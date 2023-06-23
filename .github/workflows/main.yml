@@ -37,8 +37,8 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         with:
           name: KernelSU_$KernelSU_id_patch_$Patch_id
-          path: 
-            ./
+          path:  $KernelSU_Dir/*
+          retention-days: 5
 
           
       
