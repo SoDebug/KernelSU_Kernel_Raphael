@@ -212,6 +212,11 @@ jobs:
         with:
           path: ${{ env.Release_DIR }}
           
+      - name: GZIP KernelSU Patched
+        run: |
+          cd ${{ env.Release_DIR }}
+          tar -zcvf KernelSU_Patched.tar.gz KernelSU_Patched
+
       - name: Release
         uses: softprops/action-gh-release@v1
         env:
@@ -221,4 +226,5 @@ jobs:
           name: ${{ env.DATE }} Kernel for Raphael
           body_path: release.txt
           files: |
-            ${{ env.Release_DIR }}/*
+            ${{ env.Release_DIR }}/*.zip
+            ${{ env.Release_DIR }}/*.tar.gz
