@@ -4,4 +4,39 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - "13.0"
+    - "main"
+
+jobs:
+  Package_KernelSU:
+    runs-on: ubuntu-latest
+    env:
+      KernelSU_Dir: /home/runner/work/KernelSU
+      Setup_Dir: /home/runner/work/Setup_Dir
+    steps:
+      - name: Download KernelSU from 'SoDebug/KernelSU'
+        run: |
+          mkdir $KernelSU_Dir
+          git clone https://github.com/SoDebug/KernelSU.git $KernelSU_Dir
+          version=$(git show -s commit hash: %H")
+          echo "version=$KernelSU_id" >> $GITHUB_ENV
+          
+      - name: Download Patch form 'SoDebug/KernelSU'
+        run: |
+          mkdir $Setup_Dir 
+          git clone https://github.com/SoDebug/KernelSU.git $Setup_Dir
+          version=$(git show -s commit hash: %H")
+          echo "version=$Patch_id" >> $GITHUB_ENV
+          
+      - name: Patch Kernel
+        run: |
+          cp $Setup_Dir/setup.sh $KernelSU_Dir/kernel/setup.sh
+          
+      - name: Upload KernelSU Patch
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: KernelSU_$KernelSU_id_patch_$Patch_id
+          path: 
+            ./
+
+          
+      
