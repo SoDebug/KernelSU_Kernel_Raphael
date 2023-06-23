@@ -66,7 +66,7 @@ jobs:
           
       - name: Remove Old KernelSU Files
         run: |
-          cd {{ env.CheckOut_DIR }}
+          cd ${{ env.CheckOut_DIR }}
           rm -rf drivers/staging/kernelsu/*
           rm -rf .git/module/*
           
@@ -142,7 +142,9 @@ jobs:
           
       - name: Remove Old KernelSU Files
         run: |
-          rm -rf drivers/staging/kernelsu && rm -rf .git/module/*
+          cd ${{ env.CheckOut_DIR }}
+          rm -rf drivers/staging/kernelsu
+          rm -rf .git/module/*
           
       - name: Download KernelSU_Patched 
         uses: actions/download-artifact@v3
