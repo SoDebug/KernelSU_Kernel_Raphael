@@ -37,7 +37,7 @@ jobs:
           retention-days: 5
           
   Complie_Evolution:
-      needs: Package_KernelSU
+      needs: Patch_KernelSU
       runs-on: ubuntu-latest
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
@@ -111,7 +111,7 @@ jobs:
           path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}.zip
           
   Complie_SOVIET-ANDROID:
-      needs: Package_KernelSU
+      needs: Patch_KernelSU
       runs-on: ubuntu-latest
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael/kernel_xiaomi_raphael
