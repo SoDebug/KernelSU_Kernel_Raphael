@@ -227,5 +227,4 @@ jobs:
           name: ${{ env.DATE }} Kernel for Raphael
           body_path: release.txt
           files: |
-            ${{ env.Release_DIR }}/*.zip
-            ${{ env.Release_DIR }}/*.tar.gz
+            ${{ env.Release_DIR }}
