@@ -7,7 +7,7 @@ on:
     - "main"
 
 jobs:
-  Package_KernelSU:
+  Patch_KernelSU:
     runs-on: ubuntu-latest
     env:
       KernelSU_Dir: /home/runner/work/KernelSU
@@ -215,6 +215,7 @@ jobs:
       - name: GZIP KernelSU Patched
         run: |
           cd ${{ env.Release_DIR }}
+          ls
           tar -zcvf KernelSU_Patched.tar.gz KernelSU_Patched
 
       - name: Release
