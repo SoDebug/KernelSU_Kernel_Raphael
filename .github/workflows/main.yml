@@ -14,6 +14,7 @@ jobs:
       Setup_Dir: /home/runner/work/Setup_Dir
     steps:
       - name: Download KernelSU from 'SoDebug/KernelSU'
+        id: get_kernelsu
         run: |
           mkdir $KernelSU_Dir
           git clone https://github.com/SoDebug/KernelSU.git $KernelSU_Dir
@@ -22,6 +23,7 @@ jobs:
           run: echo "::set-output name={KernelSU_id}::{version}"
           
       - name: Download Patch form 'SoDebug/KernelSU'
+        id: get_patch
         run: |
           mkdir $Setup_Dir 
           git clone -b setup https://github.com/SoDebug/KernelSU.git $Setup_Dir
@@ -36,7 +38,7 @@ jobs:
       - name: Upload KernelSU Patch
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: KernelSU_${{ steps.Download KernelSU from 'SoDebug/KernelSU'.outputs.KernelSU_id }}_patch_${{ steps.Download KernelSU from 'SoDebug/KernelSU'.outputs.Patch_id }}
+          name: KernelSU_${{ steps.get_kernelsu.outputs.KernelSU_id }}_patch_${{ steps.get_patch.outputs.Patch_id }}
           path: ${{ env.KernelSU_Dir }}
           retention-days: 5
 
