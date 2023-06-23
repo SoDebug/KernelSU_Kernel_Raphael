@@ -66,8 +66,7 @@ jobs:
       - name: Integrate KernelSU
         run: |
           cd ${{ env.CheckOut_DIR }}
-          rm -rf drivers/staging/kernelsu/*
-          cp -r KernelSU/* drivers/staging/kernelsu/
+          rm -rf drivers/staging/kernelsu
           sh KernelSU/kernel/setup.sh
           
       - name: Cloning Sources and Toolchain
@@ -100,88 +99,16 @@ jobs:
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/Image.gz-dtb ${{ env.AnyKernel }} &&
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o &&
           cd ${{ env.AnyKernel }} &&
-          7z a -mx9 "Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}.zip" *
+          7z a -mx9 "Raphael-Kernel_KSU_Dev_Evolution_13.zip" *
           
       - name: Upload output_files directory
         uses: actions/upload-artifact@main
         with:
-          name: Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}
-          path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}.zip
-          
-  Complie_SOVIET-ANDROID:
-      needs: Patch_KernelSU
-      runs-on: ubuntu-latest
-      env:
-        CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael/kernel_xiaomi_raphael
-        AnyKernel: /home/runner/work/kernel_xiaomi_raphael/AnyKernel
-      steps:
-      - name: Set current time
-        id: set_time
-        run: echo "{time}={date +'%Y-%m-%d_%H-%M-%S'}" >> $GITHUB_OUTPUT
-            
-      - name: Installing Dependencies
-        run: |
-          sudo apt update -y
-          sudo apt-get install -y zip flex bison libncurses-dev gawk  libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget libssl-dev cpio p7zip-full ccache
-          sudo apt clean
-          
-      - name: Cloning Sources and Toolchain
-        run: |
-          git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b master ~/clang
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
-          git clone https://github.com/onettboots/boolx_anykernel.git ${{ env.AnyKernel }}
-          
-      - name: Clone Kernel Tree
-        run: |
-          git clone -b 13.0_0516 https://github.com/SoDebug/kernel_xiaomi_raphael.git $CheckOut_DIR
-          
-      - name: Download KernelSU_Patched 
-        uses: actions/download-artifact@v3
-        with:
-          name: KernelSU_Patched
-          path: ${{ env.CheckOut_DIR }}/KernelSU
-          
-      - name: Integrate KernelSU
-        run: |
-          cd ${{ env.CheckOut_DIR }}
-          rm -rf drivers/staging/kernelsu/*
-          cp -r KernelSU/* drivers/staging/kernelsu/
-          sh KernelSU/kernel/setup.sh
-
-      - name: Compiling Kernel
-        id: compile
-        run: |
-          CLANG=~/clang/clang-r487747c/bin
-          GCC32=~/arm-linux-androideabi-4.9/bin
-          GCC64=~/aarch64-linux-android-4.9/bin
-          PATH=$CLANG:$GCC64:$GCC32:$PATH
-          export PATH
-          export ARCH=arm64
-          export CLANG_TRIPLE=aarch64-linux-gnu
-          export CROSS_COMPILE=aarch64-linux-android-
-          export CROSS_COMPILE_ARM32=arm-linux-androideabi-
-          output_dir=out
-          cd ${{ env.CheckOut_DIR }}
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" raphael_defconfig
-          make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j$(grep -c ^processor /proc/cpuinfo)
-          
-      - name: Packaging the Kernel
-        id: package
-        run: |
-          cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/Image.gz-dtb ${{ env.AnyKernel }} &&
-          cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o &&
-          cd ${{ env.AnyKernel }} &&
-          7z a -mx9 "Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_${{ steps.set_time.outputs.time }}.zip" *
-          
-      - name: Upload output_files directory
-        uses: actions/upload-artifact@main
-        with:
-          name: Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_${{ steps.set_time.outputs.time }}
-          path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_${{ steps.set_time.outputs.time }}.zip
+          name: Raphael-Kernel_KSU_Dev_Evolution_13
+          path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_Evolution_13.zip
           
   Release:
-      needs: [Complie_Evolution, Complie_SOVIET-ANDROID]
+      needs: [Complie_Evolution]
       runs-on: ubuntu-latest
       env:
         Release_DIR: /home/runner/work/release
