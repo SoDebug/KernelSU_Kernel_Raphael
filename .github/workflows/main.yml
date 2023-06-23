@@ -45,8 +45,8 @@ jobs:
       steps:
       - name: Set current time
         id: set_time
-        run: |
-            echo "::set-output name=time::$(date +'%Y-%m-%d_%H-%M-%S')"
+        run: echo "{name}={date +'%Y-%m-%d_%H-%M-%S'}" >> $GITHUB_OUTPUT
+            
       - name: Installing Dependencies
         run: |
           sudo apt update -y
@@ -119,8 +119,7 @@ jobs:
       steps:
       - name: Set current time
         id: set_time
-        run: |
-            echo "::set-output name=time::$(date +'%Y-%m-%d_%H-%M-%S')"
+        run: echo "{name}={date +'%Y-%m-%d_%H-%M-%S'}" >> $GITHUB_OUTPUT
             
       - name: Installing Dependencies
         run: |
@@ -193,8 +192,7 @@ jobs:
       steps:
       - name: Set current time
         id: set_time
-        run: |
-            echo "::set-output name=time::$(date +'%Y-%m-%d_%H-%M-%S')"
+        run: echo "{name}={date +'%Y-%m-%d_%H-%M-%S'}" >> $GITHUB_OUTPUT
             
       - name: Generate release tag
         id: tag
@@ -215,8 +213,12 @@ jobs:
       - name: GZIP KernelSU Patched
         run: |
           cd ${{ env.Release_DIR }}
+          tar -zcf KernelSU_Patched.tar.gz KernelSU_Patched
           ls
-          tar -zcvf KernelSU_Patched.tar.gz KernelSU_Patched
+          
+      - name: List Files
+        run: |
+          ls -al "${{ env.Release_DIR }}"
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -226,5 +228,4 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           name: ${{ env.DATE }} Kernel for Raphael
           body_path: release.txt
-          files: |
-            ${{ env.Release_DIR }}
+          files: ${{ env.Release_DIR }}/*
