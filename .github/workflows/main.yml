@@ -98,14 +98,12 @@ jobs:
         run: |
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/Image.gz-dtb ${{ env.AnyKernel }} &&
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o &&
-          cd ${{ env.AnyKernel }} &&
-          7z a -mx9 "Raphael-Kernel_KSU_Dev_Evolution_13.zip" *
           
       - name: Upload output_files directory
         uses: actions/upload-artifact@main
         with:
           name: Raphael-Kernel_KSU_Dev_Evolution_13
-          path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_Evolution_13.zip
+          path: ${{ env.AnyKernel }}
           
   Release:
       needs: [Complie_Evolution]
@@ -137,6 +135,7 @@ jobs:
         run: |
           cd ${{ env.Release_DIR }}
           tar -zcf KernelSU_Patched.tar.gz KernelSU_Patched
+          7z a -mx9 "Raphael-Kernel_KSU_Dev_Evolution_13.zip" Raphael-Kernel_KSU_Dev_Evolution_13
           ls
           
       - name: List Files
@@ -151,4 +150,6 @@ jobs:
           tag_name: ${{ steps.tag.outputs.release_tag }}
           name: ${{ env.DATE }} Kernel for Raphael
           body_path: release.txt
-          files: ${{ env.Release_DIR }}/*
+          files: |
+            ${{ env.Release_DIR }}/*.zip
+            ${{ env.Release_DIR }}/*.tar.gz
