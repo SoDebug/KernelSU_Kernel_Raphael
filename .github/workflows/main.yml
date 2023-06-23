@@ -61,9 +61,8 @@ jobs:
           git clone https://github.com/onettboots/boolx_anykernel.git ${{ env.AnyKernel }}
           
       - name: CheckOut Kernel Tree
-        uses: actions/checkout@v3.5.2
-        with: 
-          ref: "tiramisu"
+        run: |
+          git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
           
       - name: Checkout Commit Info
         run: |
