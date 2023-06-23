@@ -17,6 +17,7 @@ jobs:
         run: |
           mkdir $KernelSU_Dir
           git clone https://github.com/SoDebug/KernelSU.git $KernelSU_Dir
+          cd $KernelSU_Dir
           version=$(git show -s --date=short --format="commit hash: %H")
           echo "version=$KernelSU_id" >> $GITHUB_ENV
           
