@@ -63,13 +63,7 @@ jobs:
       - name: Clone Kernel Tree
         run: |
           git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
-          
-      - name: Remove Old KernelSU Files
-        run: |
-          cd ${{ env.CheckOut_DIR }}
-          rm -rf drivers/staging/kernelsu/*
-          rm -rf .git/module/*
-          
+
       - name: Download KernelSU_Patched 
         uses: actions/download-artifact@v3
         with:
@@ -79,6 +73,8 @@ jobs:
       - name: Integrate KernelSU
         run: |
           cd ${{ env.CheckOut_DIR }}
+          rm -rf drivers/staging/kernelsu/*
+          cp KernelSU/* drivers/staging/kernelsu/*
           sh KernelSU/kernel/setup.sh
 
       - name: Compiling Kernel
