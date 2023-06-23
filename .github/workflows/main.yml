@@ -107,7 +107,7 @@ jobs:
       - name: Upload output_files directory
         uses: actions/upload-artifact@main
         with:
-          name: Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}.zip
+          name: Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}
           path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_Evolution_13_${{ steps.set_time.outputs.time }}.zip
           
   Complie_SOVIET-ANDROID:
@@ -181,7 +181,7 @@ jobs:
       - name: Upload output_files directory
         uses: actions/upload-artifact@main
         with:
-          name: Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_${{ steps.set_time.outputs.time }}.zip
+          name: Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_${{ steps.set_time.outputs.time }}
           path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_${{ steps.set_time.outputs.time }}.zip
           
   Release:
