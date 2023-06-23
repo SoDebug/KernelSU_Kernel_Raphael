@@ -1,0 +1,7 @@
+name: Build Kernel
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  push:
+    branches:
+    - "13.0"
