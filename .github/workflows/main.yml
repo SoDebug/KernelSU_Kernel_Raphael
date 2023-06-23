@@ -66,6 +66,7 @@ jobs:
           
       - name: Remove Old KernelSU Files
         run: |
+          cd {{ env.CheckOut_DIR }}
           rm -rf drivers/staging/kernelsu/*
           rm -rf .git/module/*
           
