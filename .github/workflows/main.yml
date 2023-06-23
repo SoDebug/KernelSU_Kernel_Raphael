@@ -53,13 +53,6 @@ jobs:
           sudo apt-get install -y zip flex bison libncurses-dev gawk  libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget libssl-dev cpio p7zip-full ccache
           sudo apt clean
           
-      - name: Cloning Sources and Toolchain
-        run: |
-          git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b master ~/clang
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
-          git clone https://github.com/onettboots/boolx_anykernel.git ${{ env.AnyKernel }}
-          
       - name: Clone Kernel Tree
         run: |
           git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
@@ -74,8 +67,15 @@ jobs:
         run: |
           cd ${{ env.CheckOut_DIR }}
           rm -rf drivers/staging/kernelsu/*
-          cp KernelSU/* drivers/staging/kernelsu/*
+          cp KernelSU/* drivers/staging/kernelsu/
           sh KernelSU/kernel/setup.sh
+          
+      - name: Cloning Sources and Toolchain
+        run: |
+          git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b master ~/clang
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
+          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/arm-linux-androideabi-4.9
+          git clone https://github.com/onettboots/boolx_anykernel.git ${{ env.AnyKernel }}          
 
       - name: Compiling Kernel
         id: compile
