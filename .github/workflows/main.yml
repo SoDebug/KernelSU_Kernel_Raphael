@@ -36,7 +36,7 @@ jobs:
           path: ${{ env.KernelSU_Dir }}
           retention-days: 5
           
-  Collect_Config:
+  Collect_Config_Complie:
     needs: Patch_KernelSU
     runs-on: ubuntu-latest
     steps:
@@ -45,15 +45,30 @@ jobs:
       id: collect_config
       run: |
         echo "Debug=${{ secrets.Debug }}" >> $GITHUB_ENV
-        echo "ALLOW_RELEASE=${{ secrets.ALLOW_RELEASE }}" >> $GITHUB_ENV
         
     - name: Setting Job
       id: set_job
       if: ${{ env.Debug == 'true' }}
       run: exit 1
+      
+  Collect_Config_Release:
+    needs: Patch_KernelSU
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Collecting config
+      id: collect_config
+      run: |
+        echo "ALLOW_RELEASE=${{ secrets.ALLOW_RELEASE }}" >> $GITHUB_ENV
+        
+    - name: Setting Job
+      id: set_job
+      if: ${{ env.ALLOW_RELEASE == 'true' }}
+      run: exit 1    
+      
         
   Complie_Evolution:
-      needs: Collect_Config
+      needs: Collect_Config_Complie
       runs-on: ubuntu-latest
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
@@ -65,33 +80,28 @@ jobs:
         run: echo "time=$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
             
       - name: Installing Dependencies
-        if: ${{ env.Debug != 'true' }}
         run: |
           sudo apt update -y
           sudo apt-get install -y zip flex bison libncurses-dev gawk  libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget libssl-dev cpio p7zip-full ccache
           sudo apt clean
           
       - name: Clone Kernel Tree
-        if: ${{ env.Debug != 'true' }}
         run: |
           git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
 
       - name: Download KernelSU_Patched
-        if: ${{ env.Debug != 'true' }}
         uses: actions/download-artifact@v3
         with:
           name: KernelSU_Patched
           path: ${{ env.CheckOut_DIR }}/KernelSU
           
       - name: Integrate KernelSU
-        if: ${{ env.Debug != 'true' }}
         run: |
           cd ${{ env.CheckOut_DIR }}
           rm -rf drivers/staging/kernelsu
           sh KernelSU/kernel/setup.sh
           
       - name: Cloning Sources and Toolchain
-        if: ${{ env.Debug != 'true' }}
         run: |
           git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b master ~/clang
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
@@ -100,7 +110,6 @@ jobs:
 
       - name: Compiling Kernel
         id: compile
-        if: ${{ env.Debug != 'true' }}
         run: |
           CLANG=~/clang/clang-r487747c/bin
           GCC32=~/arm-linux-androideabi-4.9/bin
@@ -118,36 +127,28 @@ jobs:
           
       - name: Packaging the Kernel
         id: package
-        if: ${{ env.Debug != 'true' }}
         run: |
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/Image.gz-dtb ${{ env.AnyKernel }} &&
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o
           
       - name: Upload output_files directory
-        if: ${{ env.Debug != 'true' }}
         uses: actions/upload-artifact@main
         with:
           name: Raphael-Kernel_KSU_Dev_Evolution_13
           path: ${{ env.AnyKernel }}
           
   Release:
-      needs: [Complie_Evolution]
+      needs: [Complie_Evolution,Collect_Config_Release]
       runs-on: ubuntu-latest
       env:
         Release_DIR: /home/runner/work/release
       steps:
       
-      - name: Collect Config
-        id: collect_config
-        run: echo "Debug=${{ secrets.ALLOW_RELEASE }}" >> $GITHUB_ENV 
-      
       - name: Set current time
-        if: ${{ env.ALLOW_RELEASE == 'true' }}
         id: set_time
         run: echo "time=$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
    
       - name: Generate release tag
-        if: ${{ env.ALLOW_RELEASE == 'true' }}
         id: tag
         run: |
           echo "release_tag=$(date +"%Y%m%d")" >> $GITHUB_OUTPUT
@@ -159,13 +160,11 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
       
       - name: Download all workflow run artifacts
-        if: ${{ env.ALLOW_RELEASE == 'true' }}
         uses: actions/download-artifact@v3
         with:
           path: ${{ env.Release_DIR }}
           
       - name: GZIP KernelSU Patched
-        if: ${{ env.ALLOW_RELEASE == 'true' }}
         run: |
           cd ${{ env.Release_DIR }}
           tar -zcf KernelSU_Patched.tar.gz KernelSU_Patched/*
@@ -173,12 +172,10 @@ jobs:
           ls
           
       - name: List Files
-        if: ${{ env.ALLOW_RELEASE == 'true' }}
         run: |
           ls -al "${{ env.Release_DIR }}"
 
       - name: Release
-        if: ${{ env.ALLOW_RELEASE == 'true' }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
