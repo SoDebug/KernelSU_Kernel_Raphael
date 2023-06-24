@@ -120,7 +120,6 @@ jobs:
           rm KernelSU_*_Patched_*.tar.gz
           cd ..
           rm -rf drivers/staging/kernelsu
-          sh KernelSU/kernel/setup.sh
 
       - name: Integrate KernelSU
         run: |
