@@ -63,7 +63,7 @@ jobs:
         
     - name: Setting Job
       id: set_job
-      if: ${{ env.ALLOW_RELEASE == 'true' }}
+      if: ${{ env.ALLOW_RELEASE == 'false' }}
       run: exit 1    
       
         
