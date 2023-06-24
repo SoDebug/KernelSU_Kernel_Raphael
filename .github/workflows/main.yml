@@ -39,8 +39,7 @@ jobs:
   Complie_Evolution:
       needs: Patch_KernelSU
       runs-on: ubuntu-latest
-      environment: DEBUG_MODE
-      if: ${DEBUG_MODE != 'true'}
+      if: ${{ variables.DEBUG_MODE != 'true' }}
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
         AnyKernel: /home/runner/work/kernel_xiaomi_raphael-ex/AnyKernel
