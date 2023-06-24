@@ -121,7 +121,7 @@ jobs:
           tar czf "KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
           cd ..
           rm -rf drivers/staging/kernelsu
-          sh KernelSU/kernel/setup.sh
+          
    
       - name: Cloning Sources and Toolchain
         if: ${{ env.test_patch != 'true' }}        
