@@ -112,18 +112,23 @@ jobs:
           name: KernelSU_Patched
           path: ${{ env.CheckOut_DIR }}/KernelSU
           
-      - name: Integrate KernelSU
+      - name: Collect KernelSU
         run: |
           cd ${{ env.CheckOut_DIR }}/KernelSU
           tar -xzf KernelSU_*_Patched_*.tar.gz
           echo "kernelsu_id=$(git show -s --date=short --format="%h")" >> $GITHUB_ENV
           rm KernelSU_*_Patched_*.tar.gz
-          tar czf "KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
-          ls
           cd ..
           rm -rf drivers/staging/kernelsu
           sh KernelSU/kernel/setup.sh
-          
+
+      - name: Integrate KernelSU
+        run: |
+          cd ${{ env.CheckOut_DIR }}/KernelSU
+          tar czf "KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
+          ls
+          cd ..
+          sh KernelSU/kernel/setup.sh
    
       - name: Cloning Sources and Toolchain
         if: ${{ env.test_patch != 'true' }}        
