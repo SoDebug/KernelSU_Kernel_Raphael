@@ -194,12 +194,6 @@ jobs:
         with:
           path: ${{ env.Release_DIR }}
           
-      - name: Organize File
-        run: |
-          cd ${{ env.Release_DIR }}
-          cp KernelSU_Patched.tar.gz KernelSU_Patched/KernelSU_Patched.tar.gz
-          cp Raphael-Kernel_KSU_Dev_Evolution_13.zip Raphael-Kernel_KSU_Dev_Evolution_13/Raphael-Kernel_KSU_Dev_Evolution_13.zip
-          
       - name: List Files
         run: |
           ls -al "${{ env.Release_DIR }}"
