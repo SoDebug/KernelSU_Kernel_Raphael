@@ -35,7 +35,7 @@ jobs:
         id: get-patch-id
         run: |
           cd $Setup_Dir
-          echo "patch_id=$(git show -s --date=short --format="commit hash: %h")" >> $GITHUB_ENV          
+          echo "patch_id=$(git show -s --date=short --format="%h")" >> $GITHUB_ENV          
           
       - name: Patch Kernel
         run: |
