@@ -112,7 +112,7 @@ jobs:
           name: KernelSU_Patched
           path: ${{ env.CheckOut_DIR }}/KernelSU
           
-      - name: Collect KernelSU
+      - name: Integrate KernelSU
         run: |
           cd ${{ env.CheckOut_DIR }}/KernelSU
           tar -xzf KernelSU_*_Patched_*.tar.gz
@@ -123,15 +123,8 @@ jobs:
           rm KernelSU_*_Patched_*.tar.gz
           cd ..
           rm -rf drivers/staging/kernelsu
-
-      - name: Integrate KernelSU
-        run: |
-          cd ${{ env.CheckOut_DIR }}/KernelSU
-          tar czf "KernelSU_${{ env.kernelsu_id }}_KSU_${{ env.kernelsu_version }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
-          ls
-          cd ..
           sh KernelSU/kernel/setup.sh
-   
+
       - name: Cloning Sources and Toolchain
         if: ${{ env.test_patch != 'true' }}        
         run: |
@@ -164,13 +157,15 @@ jobs:
         run: |
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/Image.gz-dtb ${{ env.AnyKernel }} &&
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o
+          cd ${{ env.AnyKernel }}
+          7z a -mx9 "Raphael-Kernel_KSU_${{ env.kernelsu_version }}_${{ env.kernelsu_id }}_Evolution_13.zip" *
           
       - name: Upload output_files directory
         if: ${{ env.test_patch != 'true' }}
         uses: actions/upload-artifact@main
         with:
           name: Raphael-Kernel_KSU_Dev_Evolution_13
-          path: ${{ env.AnyKernel }}
+          path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_${{ env.kernelsu_version }}_${{ env.kernelsu_id }}_Evolution_13.zip
           
   Release:
       needs: [Complie_Evolution,Collect_Config_Release]
@@ -199,12 +194,11 @@ jobs:
         with:
           path: ${{ env.Release_DIR }}
           
-      - name: GZIP KernelSU Patched
+      - name: Organize File
         run: |
           cd ${{ env.Release_DIR }}
-          tar -zcf KernelSU_Patched.tar.gz KernelSU_Patched/*
-          7z a -mx9 "Raphael-Kernel_KSU_Dev_Evolution_13.zip" Raphael-Kernel_KSU_Dev_Evolution_13/*
-          ls
+          cp KernelSU_Patched.tar.gz KernelSU_Patched/KernelSU_Patched.tar.gz
+          cp Raphael-Kernel_KSU_Dev_Evolution_13.zip Raphael-Kernel_KSU_Dev_Evolution_13/Raphael-Kernel_KSU_Dev_Evolution_13.zip
           
       - name: List Files
         run: |
