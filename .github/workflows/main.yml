@@ -46,7 +46,7 @@ jobs:
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
         AnyKernel: /home/runner/work/kernel_xiaomi_raphael-ex/AnyKernel
-      if: ${{ env.Debug_Mode == false }}
+      if: env.Debug_Mode == 'false'
       steps:
       - name: Set current time
         id: set_time
