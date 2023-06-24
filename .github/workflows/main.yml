@@ -283,10 +283,12 @@ jobs:
       - name: List Files
         run: |
           ls -al "${{ env.Release_DIR }}"
-          cd ${{ env.Release_DIR }}
-          cp KernelSU_Patched/KernelSU_Patched.tar.gz KernelSU_Patched.tar.gz 
-          cp Raphael-Kernel_KSU_Dev_Evolution_13/Raphael-Kernel_KSU_Dev_Evolution_13.zip Raphael-Kernel_KSU_Dev_Evolution_13.zip
-          cp Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13/Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13.zip Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13.zip
+          cd ${{ env.Release_DIR }}/KernelSU_Patched
+          ls
+          cd ${{ env.Release_DIR }}/Raphael-Kernel_KSU_Dev_Evolution_13
+          ls
+          cd ${{ env.Release_DIR }}/Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13
+          ls
 
       - name: Release
         uses: softprops/action-gh-release@v1
