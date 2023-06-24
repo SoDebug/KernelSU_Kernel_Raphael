@@ -7,20 +7,7 @@ on:
     - "main"
     
 jobs:
-
-  ReadConfig:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Read Config
-        id: read-config
-        run: |
-          echo "::set-output name=config::$(cat config.ini)"
-
   Patch_KernelSU:
-    needs: ReadConfig
     runs-on: ubuntu-latest
     env:
       KernelSU_Dir: /home/runner/work/KernelSU
@@ -52,7 +39,6 @@ jobs:
   Complie_Evolution:
       needs: Patch_KernelSU
       runs-on: ubuntu-latest
-      if: ${{ steps.read-config.outputs.config.Debug_Mode != 'true' }}
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
         AnyKernel: /home/runner/work/kernel_xiaomi_raphael-ex/AnyKernel
@@ -122,6 +108,7 @@ jobs:
   Release:
       needs: [Complie_Evolution]
       runs-on: ubuntu-latest
+      if: ${{ secrets.DEBUG != 'true' }}
       env:
         Release_DIR: /home/runner/work/release
       steps:
