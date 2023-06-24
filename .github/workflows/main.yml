@@ -19,21 +19,35 @@ jobs:
           mkdir $KernelSU_Dir
           git clone https://github.com/SoDebug/KernelSU.git $KernelSU_Dir
           
+      - name: Get KernelSU id
+        id: get-kernelsu-id
+        run: |
+          cd $KernelSU_Dir
+          echo "kernelsu_id=$(git show -s --date=short --format="commit hash: %h")" >> $GITHUB_ENV
+          
       - name: Download Patch form 'SoDebug/KernelSU'
         id: get-patch
         run: |
           mkdir $Setup_Dir 
           git clone -b setup https://github.com/SoDebug/KernelSU.git $Setup_Dir
           
+      - name: Get Patch id
+        id: get-patch-id
+        run: |
+          cd $Setup_Dir
+          echo "patch_id=$(git show -s --date=short --format="commit hash: %h")" >> $GITHUB_ENV          
+          
       - name: Patch Kernel
         run: |
           cp $Setup_Dir/setup.sh $KernelSU_Dir/kernel/setup.sh
+          cd $KernelSU_Dir
+          tar –czf KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.patch_id }}.tar.gz *
           
       - name: Upload KernelSU Patch
         uses: actions/upload-artifact@v3.1.2
         with:
           name: KernelSU_Patched
-          path: ${{ env.KernelSU_Dir }}
+          path: ${{ env.KernelSU_Dir }}/KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.patch_id }}.tar.gz
           retention-days: 5
           
   Collect_Config_Complie:
