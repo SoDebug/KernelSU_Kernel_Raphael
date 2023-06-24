@@ -64,7 +64,8 @@ jobs:
         run: |
           git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
 
-      - name: Download KernelSU_Patched 
+      - name: Download KernelSU_Patched
+        if: ${{ env.Debug != 'true' }}
         uses: actions/download-artifact@v3
         with:
           name: KernelSU_Patched
@@ -111,6 +112,7 @@ jobs:
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o
           
       - name: Upload output_files directory
+        if: ${{ env.Debug != 'true' }}
         uses: actions/upload-artifact@main
         with:
           name: Raphael-Kernel_KSU_Dev_Evolution_13
@@ -123,11 +125,17 @@ jobs:
         Release_DIR: /home/runner/work/release
       steps:
       
+      - name: Collect Config
+        id: collect_config
+        run: echo "Debug=${{ secrets.ALLOW_RELEASE }}" >> $GITHUB_ENV 
+      
       - name: Set current time
+        if: ${{ env.ALLOW_RELEASE == 'true' }}
         id: set_time
         run: echo "time=$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
    
       - name: Generate release tag
+        if: ${{ env.ALLOW_RELEASE == 'true' }}
         id: tag
         run: |
           echo "release_tag=$(date +"%Y%m%d")" >> $GITHUB_OUTPUT
@@ -139,11 +147,13 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
       
       - name: Download all workflow run artifacts
+        if: ${{ env.ALLOW_RELEASE == 'true' }}
         uses: actions/download-artifact@v3
         with:
           path: ${{ env.Release_DIR }}
           
       - name: GZIP KernelSU Patched
+        if: ${{ env.ALLOW_RELEASE == 'true' }}
         run: |
           cd ${{ env.Release_DIR }}
           tar -zcf KernelSU_Patched.tar.gz KernelSU_Patched/*
@@ -151,10 +161,12 @@ jobs:
           ls
           
       - name: List Files
+        if: ${{ env.ALLOW_RELEASE == 'true' }}
         run: |
           ls -al "${{ env.Release_DIR }}"
 
       - name: Release
+        if: ${{ env.ALLOW_RELEASE == 'true' }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
