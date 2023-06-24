@@ -87,7 +87,7 @@ jobs:
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
         AnyKernel: /home/runner/work/kernel_xiaomi_raphael-ex/AnyKernel
-        test: true
+        test_patch: true
       steps:
 
       - name: Set current time
@@ -95,14 +95,14 @@ jobs:
         run: echo "time=$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
             
       - name: Installing Dependencies
-        if: ${{ env.test != 'true' }}
+        if: ${{ env.test_patch != 'true' }}
         run: |
           sudo apt update -y
           sudo apt-get install -y zip flex bison libncurses-dev gawk  libiberty-dev autoconf kmod bc build-essential gcc libc6 curl libstdc++6 git wget libssl-dev cpio p7zip-full ccache
           sudo apt clean
           
       - name: Clone Kernel Tree
-        if: ${{ env.test != 'true' }}
+        if: ${{ env.test_patch != 'true' }}
         run: |
           git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
 
@@ -113,13 +113,16 @@ jobs:
           path: ${{ env.CheckOut_DIR }}/KernelSU
           
       - name: Integrate KernelSU
+        if: ${{ env.test_patch != 'true' }}
         run: |
           cd ${{ env.CheckOut_DIR }}
+          cd KernelSU
+          ls
           rm -rf drivers/staging/kernelsu
           sh KernelSU/kernel/setup.sh
           
       - name: Cloning Sources and Toolchain
-        if: ${{ env.test != 'true' }}        
+        if: ${{ env.test_patch != 'true' }}        
         run: |
           git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 --depth=1 -b master ~/clang
           git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b android-10.0.0_r47 --depth=1 --single-branch --no-tags ~/aarch64-linux-android-4.9
@@ -127,7 +130,7 @@ jobs:
           git clone https://github.com/SoDebug/AnyKernel.git ${{ env.AnyKernel }}          
 
       - name: Compiling Kernel
-        if: ${{ env.test != 'true' }}      
+        if: ${{ env.test_patch != 'true' }}      
         id: compile
         run: |
           CLANG=~/clang/clang-r487747c/bin
@@ -145,14 +148,14 @@ jobs:
           make LLVM=1 LLVM_IAS=1 CC="ccache clang" -j$(grep -c ^processor /proc/cpuinfo)
           
       - name: Packaging the Kernel
-        if: ${{ env.test != 'true' }}
+        if: ${{ env.test_patch != 'true' }}
         id: package
         run: |
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/Image.gz-dtb ${{ env.AnyKernel }} &&
           cp -v ${{ env.CheckOut_DIR }}/out/arch/arm64/boot/dtbo.img ${{ env.AnyKernel }}/o
           
       - name: Upload output_files directory
-        if: ${{ env.test != 'true' }}
+        if: ${{ env.test_patch != 'true' }}
         uses: actions/upload-artifact@main
         with:
           name: Raphael-Kernel_KSU_Dev_Evolution_13
@@ -188,9 +191,6 @@ jobs:
       - name: GZIP KernelSU Patched
         run: |
           cd ${{ env.Release_DIR }}
-          ls
-          cd KernelSU_Patched
-          ls
           tar -zcf KernelSU_Patched.tar.gz KernelSU_Patched/*
           7z a -mx9 "Raphael-Kernel_KSU_Dev_Evolution_13.zip" Raphael-Kernel_KSU_Dev_Evolution_13/*
           ls
