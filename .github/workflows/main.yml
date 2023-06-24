@@ -117,6 +117,8 @@ jobs:
           cd ${{ env.CheckOut_DIR }}
           cd KernelSU
           ls
+          tar -xzf KernelSU_*_Patched_*.tar.gz
+          ls
           rm -rf drivers/staging/kernelsu
           sh KernelSU/kernel/setup.sh
           
