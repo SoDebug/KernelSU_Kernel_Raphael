@@ -36,14 +36,24 @@ jobs:
           path: ${{ env.KernelSU_Dir }}
           retention-days: 5
           
-      - name: Collecting...?\...!/...
-        id: collect_config
-        run: |
-          echo "Debug=${{ secrets.Debug }}" >> $GITHUB_ENV
-          echo "ALLOW_RELEASE=${{ secrets.ALLOW_RELEASE }}" >> $GITHUB_ENV
-          
+  Collect_Config:
+    needs: Patch_KernelSU
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Collecting config
+      id: collect_config
+      run: |
+        echo "Debug=${{ secrets.Debug }}" >> $GITHUB_ENV
+        echo "ALLOW_RELEASE=${{ secrets.ALLOW_RELEASE }}" >> $GITHUB_ENV
+        
+    - name: Setting Job
+      id: set_job
+      if: ${{ env.Debug == 'true' }}
+      run: exit 1
+        
   Complie_Evolution:
-      needs: Patch_KernelSU
+      needs: Collect_Config
       runs-on: ubuntu-latest
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
