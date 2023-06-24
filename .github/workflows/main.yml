@@ -6,6 +6,9 @@ on:
     branches:
     - "main"
     
+env:
+  DEBUG_MODE: ${{ secrets.DEBUG_MODE }}    
+    
 jobs:
   Patch_KernelSU:
     runs-on: ubuntu-latest
