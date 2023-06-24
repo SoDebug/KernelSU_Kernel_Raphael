@@ -117,6 +117,8 @@ jobs:
           cd ${{ env.CheckOut_DIR }}/KernelSU
           tar -xzf KernelSU_*_Patched_*.tar.gz
           echo "kernelsu_id=$(git show -s --date=short --format="%h")" >> $GITHUB_ENV
+          echo "git_count=$(git rev-list --count HEAD)"
+          echo "kernelsu_version=10000 + git_count + 200 " >> $GITHUB_ENV
           rm KernelSU_*_Patched_*.tar.gz
           cd ..
           rm -rf drivers/staging/kernelsu
@@ -124,7 +126,7 @@ jobs:
       - name: Integrate KernelSU
         run: |
           cd ${{ env.CheckOut_DIR }}/KernelSU
-          tar czf "KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
+          tar czf "KernelSU_${{ env.kernelsu_id }}_KSU_${{ env.kernelsu_version }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
           ls
           cd ..
           sh KernelSU/kernel/setup.sh
