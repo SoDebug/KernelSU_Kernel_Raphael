@@ -117,8 +117,9 @@ jobs:
           cd ${{ env.CheckOut_DIR }}/KernelSU
           tar -xzf KernelSU_*_Patched_*.tar.gz
           echo "kernelsu_id=$(git show -s --date=short --format="%h")" >> $GITHUB_ENV
-          echo "git_count=$(git rev-list --count HEAD)" >> $GITHUB_ENV
-          echo "kernelsu_version=$(10000 + ${{ env.git_count }} + 200)" >> $GITHUB_ENV
+          git_count=$(git rev-list --count HEAD)
+          kernelsu_version=$(expr 10000 + $git_count + 200)
+          echo "kernelsu_version=$kernelsu_version" >> $GITHUB_ENV
           rm KernelSU_*_Patched_*.tar.gz
           cd ..
           rm -rf drivers/staging/kernelsu
