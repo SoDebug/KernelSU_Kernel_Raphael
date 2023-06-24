@@ -113,7 +113,6 @@ jobs:
           path: ${{ env.CheckOut_DIR }}/KernelSU
           
       - name: Integrate KernelSU
-        if: ${{ env.test_patch != 'true' }}
         run: |
           cd ${{ env.CheckOut_DIR }}
           cd KernelSU
