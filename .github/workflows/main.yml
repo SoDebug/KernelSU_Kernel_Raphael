@@ -119,8 +119,10 @@ jobs:
           echo "kernelsu_id=$(git show -s --date=short --format="%h")" >> $GITHUB_ENV
           rm KernelSU_*_Patched_*.tar.gz
           tar czf "KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
+          ls
           cd ..
           rm -rf drivers/staging/kernelsu
+          sh KernelSU/kernel/setup.sh
           
    
       - name: Cloning Sources and Toolchain
