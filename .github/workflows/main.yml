@@ -46,7 +46,7 @@ jobs:
       
       - name: Collect Config
         id: collect_config
-        run: echo "Debug=${{ secrets.Debug }} >> $GITHUB_ENV
+        run: echo "Debug=${{ secrets.Debug }}" >> $GITHUB_ENV
       
       - name: Set current time
         id: set_time
