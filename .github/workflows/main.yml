@@ -279,16 +279,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: ${{ env.Release_DIR }}
-          
-      - name: List Files
-        run: |
-          ls -al "${{ env.Release_DIR }}"
-          cd ${{ env.Release_DIR }}/KernelSU_Patched
-          ls
-          cd ${{ env.Release_DIR }}/Raphael-Kernel_KSU_Dev_Evolution_13
-          ls
-          cd ${{ env.Release_DIR }}/Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13
-          ls
 
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -299,5 +289,6 @@ jobs:
           name: ${{ steps.tag.outputs.release_tag }} Kernel for Raphael
           body_path: release.txt
           files: |
-            ${{ env.Release_DIR }}/*.zip
-            ${{ env.Release_DIR }}/*.tar.gz
+            ${{ env.Release_DIR }}/KernelSU_Patched/*.tar.gz
+            ${{ env.Release_DIR }}/Raphael-Kernel_KSU_Dev_Evolution_13/*.zip
+            ${{ env.Release_DIR }}/Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13/*.zip
