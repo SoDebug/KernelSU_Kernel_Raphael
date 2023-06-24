@@ -5,6 +5,10 @@ on:
   push:
     branches:
     - "main"
+    
+env:
+  Debug_Mode: true
+  Allow_Release: false
 
 jobs:
   Patch_KernelSU:
@@ -42,6 +46,7 @@ jobs:
       env:
         CheckOut_DIR: /home/runner/work/kernel_xiaomi_raphael-ex/kernel_xiaomi_raphael-ex
         AnyKernel: /home/runner/work/kernel_xiaomi_raphael-ex/AnyKernel
+      if: env.Debug_Mode == false
       steps:
       - name: Set current time
         id: set_time
