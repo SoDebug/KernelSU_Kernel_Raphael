@@ -20,6 +20,7 @@ jobs:
           echo "::set-output name=config::$(cat config.ini)"
 
   Patch_KernelSU:
+    needs: ReadConfig
     runs-on: ubuntu-latest
     env:
       KernelSU_Dir: /home/runner/work/KernelSU
