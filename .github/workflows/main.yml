@@ -41,7 +41,7 @@ jobs:
         run: |
           cp $Setup_Dir/setup.sh $KernelSU_Dir/kernel/setup.sh
           cd $KernelSU_Dir
-          tar –czf KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.patch_id }}.tar.gz *
+          tar czf KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.patch_id }}.tar.gz *
           
       - name: Upload KernelSU Patch
         uses: actions/upload-artifact@v3.1.2
