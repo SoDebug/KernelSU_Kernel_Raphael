@@ -92,7 +92,7 @@ jobs:
 
       - name: Set current time
         id: set_time
-        run: echo "time=$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
+        run: echo "time=$(date +'%Y-%m-%d_%H-%M-%S')" >> $GITHUB_ENV
             
       - name: Installing Dependencies
         if: ${{ env.test_patch != 'true' }}
@@ -116,12 +116,13 @@ jobs:
         run: |
           cd ${{ env.CheckOut_DIR }}/KernelSU
           tar -xzf KernelSU_*_Patched_*.tar.gz
+          echo "kernelsu_id=$(git show -s --date=short --format="%h")" >> $GITHUB_ENV
           rm KernelSU_*_Patched_*.tar.gz
-          ls
+          tar czf "KernelSU_${{ env.kernelsu_id }}_Patched_${{ env.time }}.tar.gz" .[!.]* *
           cd ..
           rm -rf drivers/staging/kernelsu
           sh KernelSU/kernel/setup.sh
-          
+   
       - name: Cloning Sources and Toolchain
         if: ${{ env.test_patch != 'true' }}        
         run: |
