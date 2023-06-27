@@ -1,3 +1,7 @@
+2023/06/27
+  [Kernel Source Tree]: [add new KernelSU hooks on [SOVIET-ANDROID Kernel Tree](https://github.com/SoDebug/kernel_xiaomi_raphael/tree/13.0_0516)](https://github.com/tiann/KernelSU/commit/bd8434f4f4f3e631f66d36ad8afdf7a4201c4851)
+  [KernelSU]: no change
+
 2023/06/26
-  [Kernel Source Tree]: [add new KernelSU hooks](https://github.com/tiann/KernelSU/commit/bd8434f4f4f3e631f66d36ad8afdf7a4201c4851)
+  [Kernel Source Tree]: [add new KernelSU hooks on [Evolution-X-Devices Kernel Tree](https://github.com/SoDebug/kernel_xiaomi_raphael-ex)(https://github.com/tiann/KernelSU/commit/bd8434f4f4f3e631f66d36ad8afdf7a4201c4851)
   [KernelSU]: no change
