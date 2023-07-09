@@ -1,3 +1,7 @@
+2023/07/09
+[Kernel Source Tree]:Revert "raphael_defconfig: enable userfaultfd" This reverts commit 3f8c45a.
+[KernelSU]:Release v0.6.2(https://github.com/tiann/KernelSU/releases/tag/v0.6.2)
+
 2023/06/28
 [Kernel Source Tree]:Revert "raphael_defconfig: enable userfaultfd" This reverts commit 3f8c45a.
 
