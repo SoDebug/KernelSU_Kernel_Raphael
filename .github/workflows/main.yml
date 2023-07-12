@@ -309,7 +309,7 @@ jobs:
         if: ${{ env.test_patch != 'true' }}
         uses: actions/upload-artifact@main
         with:
-          name: Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13
+          name: Raphael-Kernel_KSU_Dev_SOVIET-ANDROID_13_beta
           path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_${{ env.kernelsu_version }}_${{ env.kernelsu_id }}_SOVIET-ANDROID_13_beta.zip
           
   Release:
