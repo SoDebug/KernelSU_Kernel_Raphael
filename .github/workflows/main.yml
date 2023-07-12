@@ -366,8 +366,14 @@ jobs:
           echo "Device Code:raphael" >> release.txt
           echo "Device Name：Redmi K20 Pro | Mi 9T Pro" >> release.txt
           echo "Support Android：13.0" >> release.txt   
+          echo "KernelSU Git Verion：***" >> release.txt
+          echo "KernelSU Verion: *****" >> release.txt
+          echo "Patch ID: *******" >> release.txt
+          echo "KernelSU ID: *******" >> release.txt
+          echo "Tested: undefine" >> release.txt
+          echo "Build Date: $(date +"%Y/%m/%d")" >> release.txt
           echo "status=success" >> $GITHUB_OUTPUT
-      
+
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
         with:
