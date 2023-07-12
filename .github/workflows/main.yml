@@ -313,7 +313,7 @@ jobs:
           path: ${{ env.AnyKernel }}/Raphael-Kernel_KSU_${{ env.kernelsu_version }}_${{ env.kernelsu_id }}_SOVIET-ANDROID_13_beta.zip
           
   Release:
-      needs: [Complie_Evolution,Collect_Config_Release,Complie_SOVIET-ANDROID]
+      needs: [Complie_Evolution,Collect_Config_Release,Complie_SOVIET-ANDROID,Complie_SOVIET-ANDROID_beta]
       runs-on: ubuntu-latest
       env:
         Release_DIR: /home/runner/work/release
