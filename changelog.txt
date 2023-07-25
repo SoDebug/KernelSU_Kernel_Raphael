@@ -1,3 +1,7 @@
+2023/07/25
+[Kernel Source Tree]:https://github.com/SoDebug/kernel_xiaomi_raphael-ex/compare/release_2.0...Evolution-X-Devices:kernel_xiaomi_raphael:tiramisu
+[KernelSU]：https://github.com/SoDebug/KernelSU/compare/stable_v0.6.2...tiann:KernelSU:main
+
 2023/07/09
 [Kernel Source Tree]:Revert "raphael_defconfig: enable userfaultfd" This reverts commit 3f8c45a.
 [KernelSU]:Release v0.6.2(https://github.com/tiann/KernelSU/releases/tag/v0.6.2)
