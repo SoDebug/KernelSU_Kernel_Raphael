@@ -1,3 +1,6 @@
+2023/08/10
+[KernelSU]：https://github.com/tiann/KernelSU/compare/v0.6.2...v0.6.6
+
 2023/07/25
 [Kernel Source Tree]:https://github.com/SoDebug/kernel_xiaomi_raphael-ex/compare/release_2.0...Evolution-X-Devices:kernel_xiaomi_raphael:tiramisu
 [KernelSU]：https://github.com/SoDebug/KernelSU/compare/stable_v0.6.2...tiann:KernelSU:main
