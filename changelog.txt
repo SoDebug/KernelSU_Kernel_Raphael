@@ -1,3 +1,6 @@
+2023/08/21
+[Kernel Source Tree]:update to latest kernel tree
+
 2023/08/10
 [KernelSU]：https://github.com/tiann/KernelSU/compare/v0.6.2...v0.6.6
 
