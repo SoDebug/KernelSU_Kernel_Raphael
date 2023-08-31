@@ -111,7 +111,7 @@ jobs:
       - name: Clone Kernel Tree
         if: ${{ env.test_patch != 'true' }}
         run: |
-          git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git $CheckOut_DIR
+          git clone https://github.com/SoDebug/kernel_xiaomi_raphael-ex.git -b release_2.0 $CheckOut_DIR
 
       - name: Download KernelSU_Patched
         uses: actions/download-artifact@v3
