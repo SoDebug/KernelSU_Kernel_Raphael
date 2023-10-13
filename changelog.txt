@@ -1,3 +1,6 @@
+2023/10/13
+[KernelSU]:https://github.com/tiann/KernelSU/compare/tiann:KernelSU:v0.6.7...tiann:KernelSU:v0.6.9?expand=1
+
 2023/08/30
 [KernelSU]：https://github.com/tiann/KernelSU/compare/v0.6.6...v0.6.7
 
